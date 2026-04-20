@@ -31,7 +31,9 @@ class DashboardController extends Controller
             $marketWatchData = [];
         }
 
-        return view('dashboard', compact('hotZones', 'marketWatchData'));
+        $watchlist = Auth::user()->watchlists()->pluck('symbol')->toArray();
+
+        return view('dashboard', compact('hotZones', 'marketWatchData', 'watchlist'));
     }
 
     public function predict(Request $request)
@@ -65,5 +67,27 @@ class DashboardController extends Controller
         }
 
         return back()->withErrors(['ml_engine' => 'Invalid response from ML Engine.']);
+    }
+
+    public function addToWatchlist(Request $request)
+    {
+        $request->validate([
+            'symbol' => 'required|string|max:10'
+        ]);
+
+        $symbol = strtoupper($request->symbol);
+
+        Auth::user()->watchlists()->firstOrCreate([
+            'symbol' => $symbol
+        ]);
+
+        return back()->with('status', 'Added to watchlist');
+    }
+
+    public function removeFromWatchlist($symbol)
+    {
+        Auth::user()->watchlists()->where('symbol', strtoupper($symbol))->delete();
+
+        return back()->with('status', 'Removed from watchlist');
     }
 }

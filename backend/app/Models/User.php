@@ -46,4 +46,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the watchlists for the user.
+     */
+    public function watchlists()
+    {
+        return $this->hasMany(Watchlist::class);
+    }
 }

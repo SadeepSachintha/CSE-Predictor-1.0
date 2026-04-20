@@ -61,6 +61,44 @@
                 </div>
             @endif
 
+            <!-- User Watchlist (Pinned Stocks) -->
+            @if(isset($watchlist) && count($watchlist) > 0)
+                <div class="mb-6 flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+                    @foreach($watchlist as $pinned)
+                        <div class="flex-shrink-0 bg-[#161616] border border-blue-500/30 px-5 py-3 rounded-xl shadow-lg flex items-center gap-4 hover:border-blue-400 transition-colors group">
+                            <div>
+                                <h4 class="text-white font-bold text-lg">{{ $pinned }}</h4>
+                                <span class="text-xs text-gray-500 uppercase tracking-widest">Pinned</span>
+                            </div>
+                            <form action="{{ route('watchlist.remove', $pinned) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-gray-600 hover:text-red-400 transition-colors p-1" title="Unpin">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                </button>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            <!-- Interactive Trading Chart (TradingView) -->
+            <div class="bg-gray-800/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl shadow-xl overflow-hidden mb-8 relative group">
+                <div class="px-6 py-4 border-b border-gray-700/50 flex justify-between items-center bg-black/20">
+                    <h3 class="text-xl font-semibold text-white tracking-tight flex items-center gap-3">
+                        <div class="p-1.5 bg-blue-500/20 rounded-lg border border-blue-500/30">
+                            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+                        </div>
+                        Live Market Chart
+                    </h3>
+                    <div class="flex gap-2">
+                        <button id="btn-candlestick" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-xs font-semibold rounded text-white transition-colors">Candlestick</button>
+                        <button id="btn-line" class="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-xs font-semibold rounded text-white transition-colors">Line</button>
+                    </div>
+                </div>
+                <div id="tv-chart" class="w-full h-[400px]"></div>
+            </div>
+
             <!-- Market Watch - Equity (Atrad Style) -->
             <div class="bg-[#111111] border border-gray-800 rounded-lg shadow-xl overflow-hidden font-mono text-xs text-gray-300">
                 <div class="bg-gradient-to-b from-[#2a2a2a] to-[#1c1c1c] border-b border-gray-700 px-4 py-2 flex items-center justify-between">
@@ -92,6 +130,7 @@
                                 <th class="p-2 font-normal">Volume</th>
                                 <th class="p-2 font-normal text-center">Trades</th>
                                 <th class="p-2 font-normal text-center">Buy Sentiment</th>
+                                <th class="p-2 font-normal text-center border-l border-gray-800">Watch</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-800" id="market-watch-body">
@@ -130,11 +169,30 @@
                                                 <div class="absolute top-0 left-0 w-full h-full text-[9px] font-bold text-center leading-4 text-white drop-shadow-md">{{ $row['BuySentiment'] }}%</div>
                                             </div>
                                         </td>
+                                        <td class="p-2 text-center border-l border-gray-800">
+                                            @if(isset($watchlist) && in_array($row['Symbol'], $watchlist))
+                                                <form action="{{ route('watchlist.remove', $row['Symbol']) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-yellow-500 hover:text-yellow-400 transition" title="Unpin from Watchlist">
+                                                        <svg class="w-5 h-5 mx-auto" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('watchlist.add') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="symbol" value="{{ $row['Symbol'] }}">
+                                                    <button type="submit" class="text-gray-600 hover:text-yellow-500 transition" title="Pin to Watchlist">
+                                                        <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="15" class="p-8 text-center text-gray-500">Market Data Unavailable - Connect to ML Engine</td>
+                                    <td colspan="16" class="p-8 text-center text-gray-500">Market Data Unavailable - Connect to ML Engine</td>
                                 </tr>
                             @endif
                         </tbody>
