@@ -22,25 +22,39 @@
             <!-- Prediction Result Overlay -->
             @if (session('prediction'))
                 <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-100 p-6 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.15)] backdrop-blur-lg transform transition hover:scale-[1.01] duration-300">
-                    <h3 class="text-xl font-bold mb-2 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                        <div class="relative flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/50">
+                            <svg class="w-6 h-6 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        </div>
                         Prediction Generated
                     </h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                        <div class="bg-black/40 p-4 rounded-xl border border-gray-700/50">
-                            <p class="text-sm text-gray-400 uppercase">Symbol</p>
-                            <p class="text-2xl font-black text-white">{{ session('prediction')['symbol'] }}</p>
+                        <div class="bg-black/40 p-4 rounded-xl border border-gray-700/50 hover:bg-black/60 transition-colors group">
+                            <p class="text-sm text-gray-400 uppercase flex items-center gap-2">
+                                <svg class="w-4 h-4 text-gray-500 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                                Symbol
+                            </p>
+                            <p class="text-2xl font-black text-white mt-1">{{ session('prediction')['symbol'] }}</p>
                         </div>
-                        <div class="bg-black/40 p-4 rounded-xl border border-gray-700/50">
-                            <p class="text-sm text-gray-400 uppercase">Target Price</p>
-                            <p class="text-2xl font-black text-emerald-400">Rs. {{ session('prediction')['predicted_price'] }}</p>
+                        <div class="bg-black/40 p-4 rounded-xl border border-gray-700/50 hover:bg-black/60 transition-colors group">
+                            <p class="text-sm text-gray-400 uppercase flex items-center gap-2">
+                                <svg class="w-4 h-4 text-gray-500 group-hover:text-emerald-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Target Price
+                            </p>
+                            <p class="text-2xl font-black text-emerald-400 mt-1">Rs. {{ session('prediction')['predicted_price'] }}</p>
                         </div>
-                        <div class="bg-black/40 p-4 rounded-xl border border-gray-700/50">
-                            <p class="text-sm text-gray-400 uppercase">Confidence</p>
-                            <p class="text-2xl font-black text-blue-400">{{ session('prediction')['confidence'] * 100 }}%</p>
+                        <div class="bg-black/40 p-4 rounded-xl border border-gray-700/50 hover:bg-black/60 transition-colors group">
+                            <p class="text-sm text-gray-400 uppercase flex items-center gap-2">
+                                <svg class="w-4 h-4 text-gray-500 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Confidence
+                            </p>
+                            <p class="text-2xl font-black text-blue-400 mt-1">{{ session('prediction')['confidence'] * 100 }}%</p>
                         </div>
-                        <div class="bg-black/40 p-4 rounded-xl border border-gray-700/50">
-                            <p class="text-sm text-gray-400 uppercase">Model Engine</p>
+                        <div class="bg-black/40 p-4 rounded-xl border border-gray-700/50 hover:bg-black/60 transition-colors group">
+                            <p class="text-sm text-gray-400 uppercase flex items-center gap-2">
+                                <svg class="w-4 h-4 text-gray-500 group-hover:text-purple-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                                Model Engine
+                            </p>
                             <p class="text-sm font-semibold text-purple-400 mt-1">{{ session('prediction')['model_used'] }}</p>
                         </div>
                     </div>
@@ -53,7 +67,12 @@
                     <div class="bg-gray-800/80 backdrop-blur-xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] sm:rounded-3xl border border-gray-700/50 relative group">
                         <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div class="p-8 relative z-10">
-                            <h3 class="text-2xl font-semibold mb-6 text-white tracking-tight">Run Prediction</h3>
+                            <h3 class="text-2xl font-semibold mb-6 text-white tracking-tight flex items-center gap-3">
+                                <div class="p-2 bg-blue-500/20 rounded-lg border border-blue-500/30">
+                                    <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                Run Prediction
+                            </h3>
                             
                             <form action="{{ route('predict') }}" method="POST" class="space-y-6">
                                 @csrf
@@ -61,8 +80,9 @@
                                     <label class="block text-sm font-medium text-gray-400 mb-2">Stock Symbol (e.g., COMB, DIAL)</label>
                                     <input type="text" name="symbol" class="w-full bg-black/50 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300" placeholder="Enter Symbol..." required>
                                 </div>
-                                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 px-6 rounded-xl shadow-[0_10px_25px_rgba(79,70,229,0.4)] hover:shadow-[0_15px_35px_rgba(79,70,229,0.5)] transform hover:-translate-y-1 transition-all duration-300">
+                                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 px-6 rounded-xl shadow-[0_10px_25px_rgba(79,70,229,0.4)] hover:shadow-[0_15px_35px_rgba(79,70,229,0.5)] transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3 group">
                                     Analyze & Predict
+                                    <svg class="w-5 h-5 text-indigo-200 group-hover:text-white group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </button>
                             </form>
                         </div>
@@ -73,8 +93,13 @@
                 <div class="col-span-1 lg:col-span-2">
                     <div class="bg-gray-800/80 backdrop-blur-xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] sm:rounded-3xl border border-gray-700/50">
                         <div class="p-8">
-                            <h3 class="text-2xl font-semibold mb-6 text-white tracking-tight flex items-center gap-2">
-                                <svg class="w-6 h-6 text-orange-400" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
+                            <h3 class="text-2xl font-semibold mb-6 text-white tracking-tight flex items-center gap-3">
+                                <div class="relative flex items-center justify-center w-10 h-10 rounded-full bg-orange-500/20 border border-orange-500/50">
+                                    <svg class="w-6 h-6 text-orange-400 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)] animate-[pulse_2s_ease-in-out_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path>
+                                    </svg>
+                                </div>
                                 CSE Hot Zones (April 2026)
                             </h3>
                             
