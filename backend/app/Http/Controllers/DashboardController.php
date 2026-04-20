@@ -32,7 +32,7 @@ class DashboardController extends Controller
         $symbol = strtoupper($request->symbol);
 
         try {
-            $response = Http::post('http://127.0.0.1:8000/predict', [
+            $response = Http::post('http://127.0.0.1:8001/predict', [
                 'symbol' => $symbol,
             ]);
 
