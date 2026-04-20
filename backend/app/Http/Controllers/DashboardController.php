@@ -20,7 +20,18 @@ class DashboardController extends Controller
             ['sector' => 'Banking', 'outlook' => 'Stable/Dividends', 'note' => 'Dialog (DIAL) recently increased dividends to Rs. 1.50.'],
         ];
 
-        return view('dashboard', compact('hotZones'));
+        $marketWatchData = [];
+        try {
+            $response = Http::timeout(8)->get('http://127.0.0.1:8001/market-watch');
+            if ($response->successful()) {
+                $marketWatchData = $response->json()['data'] ?? [];
+            }
+        } catch (\Exception $e) {
+            // Fails silently for the dashboard load if ML engine is off
+            $marketWatchData = [];
+        }
+
+        return view('dashboard', compact('hotZones', 'marketWatchData'));
     }
 
     public function predict(Request $request)

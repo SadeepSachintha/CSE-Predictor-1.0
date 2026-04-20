@@ -61,6 +61,87 @@
                 </div>
             @endif
 
+            <!-- Market Watch - Equity (Atrad Style) -->
+            <div class="bg-[#111111] border border-gray-800 rounded-lg shadow-xl overflow-hidden font-mono text-xs text-gray-300">
+                <div class="bg-gradient-to-b from-[#2a2a2a] to-[#1c1c1c] border-b border-gray-700 px-4 py-2 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        <span class="text-white font-semibold">Market Watch - Full Watch - Equity</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> Market : Open</span>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr class="bg-[#1a1a1a] text-gray-400 border-b border-gray-800">
+                                <th class="p-2 text-left font-normal border-r border-gray-800">Security</th>
+                                <th class="p-2 text-left font-normal border-r border-gray-800">Company Name</th>
+                                <th class="p-2 font-normal">Bid Qty</th>
+                                <th class="p-2 font-normal text-yellow-500">Bid Price</th>
+                                <th class="p-2 font-normal text-red-400">Ask Price</th>
+                                <th class="p-2 font-normal">Ask Qty</th>
+                                <th class="p-2 font-normal text-green-400 border-l border-gray-800">Last</th>
+                                <th class="p-2 font-normal">Last Qty</th>
+                                <th class="p-2 font-normal">Change</th>
+                                <th class="p-2 font-normal">% Change</th>
+                                <th class="p-2 font-normal">High</th>
+                                <th class="p-2 font-normal border-r border-gray-800">Low</th>
+                                <th class="p-2 font-normal">Volume</th>
+                                <th class="p-2 font-normal text-center">Trades</th>
+                                <th class="p-2 font-normal text-center">Buy Sentiment</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800" id="market-watch-body">
+                            @if(isset($marketWatchData) && count($marketWatchData) > 0)
+                                @foreach($marketWatchData as $row)
+                                    @php
+                                        $isPositive = floatval($row['Change']) > 0;
+                                        $isNegative = floatval($row['Change']) < 0;
+                                        $colorClass = $isPositive ? 'text-green-500' : ($isNegative ? 'text-red-500' : 'text-gray-400');
+                                    @endphp
+                                    <tr class="hover:bg-[#202020] transition-colors">
+                                        <td class="p-2 text-left text-white border-r border-gray-800">{{ $row['Symbol'] }}</td>
+                                        <td class="p-2 text-left text-gray-400 truncate max-w-[150px] border-r border-gray-800">{{ $row['CompanyName'] }}</td>
+                                        <td class="p-2">{{ number_format($row['BidQty']) }}</td>
+                                        <td class="p-2 text-green-400 font-medium">{{ $row['BidPrice'] }}</td>
+                                        <td class="p-2 text-red-400 font-medium">{{ $row['AskPrice'] }}</td>
+                                        <td class="p-2">{{ number_format($row['AskQty']) }}</td>
+                                        <td class="p-2 {{ $colorClass }} font-semibold border-l border-gray-800">
+                                            {{ $row['Last'] }}
+                                            @if($isPositive)
+                                                <span class="inline-block transform -translate-y-0.5">▲</span>
+                                            @elseif($isNegative)
+                                                <span class="inline-block transform translate-y-0.5">▼</span>
+                                            @endif
+                                        </td>
+                                        <td class="p-2">{{ number_format($row['LastQty']) }}</td>
+                                        <td class="p-2 {{ $colorClass }}">{{ $row['Change'] }}</td>
+                                        <td class="p-2 {{ $colorClass }}">{{ $row['ChangePct'] }}</td>
+                                        <td class="p-2 text-green-500">{{ $row['High'] }}</td>
+                                        <td class="p-2 text-red-500 border-r border-gray-800">{{ $row['Low'] }}</td>
+                                        <td class="p-2">{{ $row['Volume'] }}</td>
+                                        <td class="p-2 text-center">{{ $row['Trades'] }}</td>
+                                        <td class="p-2 text-center">
+                                            <div class="relative w-16 bg-gray-800 rounded h-4 mx-auto overflow-hidden">
+                                                <div class="absolute top-0 left-0 h-full bg-green-500" style="width: {{ $row['BuySentiment'] }}%;"></div>
+                                                <div class="absolute top-0 left-0 w-full h-full text-[9px] font-bold text-center leading-4 text-white drop-shadow-md">{{ $row['BuySentiment'] }}%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="15" class="p-8 text-center text-gray-500">Market Data Unavailable - Connect to ML Engine</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Left Column: Prediction Tool -->
                 <div class="col-span-1">

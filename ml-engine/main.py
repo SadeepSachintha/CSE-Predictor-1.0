@@ -50,13 +50,12 @@ def predict_stock(req: PredictRequest):
             if not history.empty:
                 current_price = history['Close'].iloc[-1]
             else:
-                current_price = 110.00 # Fallback 
+                current_price = 355.00 if req.symbol in ['HNB', 'HNB.X'] else 110.00
         else:
-            # Fallback if module is missing
-            current_price = 110.00 # Base simulated fallback
+            current_price = 355.00 if req.symbol in ['HNB', 'HNB.X'] else 110.00
     except Exception as e:
         print(f"fetch error: {e}")
-        current_price = 110.00 # Fallback
+        current_price = 355.00 if req.symbol in ['HNB', 'HNB.X'] else 110.00
 
     # 2. Dynamic Integration using basic arithmetic sim
     banking = ['COMB', 'HNB', 'SAMP', 'NDB', 'LOLC']
@@ -94,3 +93,10 @@ def trigger_retrain(req: RetrainRequest, background_tasks: BackgroundTasks):
 
     background_tasks.add_task(train_model, req.symbol)
     return {"message": f"Retraining task for {req.symbol} queued successfully."}
+
+from ingestion.equity_scraper import fetch_market_watch
+
+@app.get("/market-watch")
+def get_market_watch():
+    data = fetch_market_watch()
+    return {"status": "success", "data": data}
