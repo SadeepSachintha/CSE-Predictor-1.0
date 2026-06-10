@@ -5,8 +5,12 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-200" />
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group">
+                        <x-application-logo class="block h-9 w-auto fill-current text-emerald-400 group-hover:text-emerald-300 transition-colors" />
+                        <span class="font-bold text-lg text-white group-hover:text-gray-200 transition-colors tracking-tight font-sans">
+                            CSE <span class="text-emerald-400">Predictor</span>
+                            <span class="block text-[9px] text-gray-500 font-medium tracking-normal -mt-1 group-hover:text-emerald-500/80 transition-colors">by SS Labz</span>
+                        </span>
                     </a>
                 </div>
 

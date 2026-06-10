@@ -1,8 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 leading-tight">
-            {{ __('CSE-Predictor 1.0 - Dashboard') }}
-        </h2>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <h2 class="font-semibold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 leading-tight">
+                {{ __('CSE Predictor - Dashboard') }}
+            </h2>
+            <div class="flex items-center gap-1.5 text-xs text-gray-400 font-sans">
+                <span>A product of</span>
+                <a href="https://ss-labz.pages.dev/" target="_blank" class="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors underline decoration-emerald-500/30 underline-offset-4">
+                    SS Labz
+                </a>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-12 bg-gray-900 min-h-screen text-gray-100 font-sans tracking-wide">
